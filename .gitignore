@@ -312,3 +312,4 @@ Thumbs.db
 
 # Project specific
 __version__.py
+_private
