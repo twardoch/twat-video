@@ -4,6 +4,7 @@
 This script analyzes pairs of video frames (images) and generates creative prompts
 for unfortunate events that could occur between them.
 """
+
 from __future__ import annotations
 
 import re

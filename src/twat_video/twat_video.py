@@ -3,6 +3,7 @@
 
 Created by Adam Twardoch
 """
+
 from __future__ import annotations
 
 import logging
@@ -13,8 +14,7 @@ __version__ = "0.1.0"
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -22,16 +22,14 @@ logger = logging.getLogger(__name__)
 @dataclass
 class Config:
     """Configuration settings for twat_video."""
+
     name: str
     value: str | int | float
     options: dict[str, Any] | None = None
 
 
 def process_data(
-    data: list[Any],
-    config: Config | None = None,
-    *,
-    debug: bool = False
+    data: list[Any], config: Config | None = None, *, debug: bool = False
 ) -> dict[str, Any]:
     """Process the input data according to configuration.
 
@@ -63,11 +61,7 @@ def main() -> None:
     """Main entry point for twat_video."""
     try:
         # Example usage
-        config = Config(
-            name="default",
-            value="test",
-            options={"key": "value"}
-        )
+        config = Config(name="default", value="test", options={"key": "value"})
         result = process_data([], config=config)
         logger.info("Processing completed: %s", result)
 
