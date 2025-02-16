@@ -1,19 +1,30 @@
+# this_file: twat_video/pyproject.toml
+
+# Build System Configuration
+# -------------------------
+# Specifies the build system and its requirements for packaging the project
+# Specifies the build backend and its requirements for building the package
 [build-system]
 requires = [
-    "hatchling>=1.21.0",
-    "hatch-vcs>=0.3.0",
+    "hatchling>=1.27.0",     # Core build backend for Hatch
+    "hatch-vcs>=0.4.0",      # Version Control System plugin for Hatch
 ]
-build-backend = "hatchling.build"
+build-backend = "hatchling.build"  # Use Hatchling as the build backend
 
+# Wheel build configuration
+# Specifies which packages to include in the wheel distribution
 [tool.hatch.build.targets.wheel]
 packages = ["src/twat_video"]
 
+# Project Metadata Configuration
+# ------------------------------
+# Comprehensive project description, requirements, and compatibility information
 [project]
 name = "twat-video"
-dynamic = ["version"]
+dynamic = ["version"]  # Version is determined dynamically from VCS
 description = ""
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10"  # Minimum Python version required
 license = "MIT"
 keywords = []
 classifiers = [
@@ -26,8 +37,11 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
 
+# Runtime Dependencies
+# -------------------
+# External packages required for the project to function
 dependencies = [
-    "twat>=1.0.0",
+    "twat>=1.8.1",           # Main twat package
 ]
 
 
