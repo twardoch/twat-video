@@ -157,10 +157,23 @@ class Cleanup:
             return None
 
         try:
-            run_command(["sh", "filetree.sh"])
-            with open(".cursor/rules/filetree.mdc") as f:
-                log_message("\nProject structure:")
-                log_message(f.read())
+            # Create/overwrite the file with YAML frontmatter
+            rules_dir = Path(".cursor/rules")
+            rules_dir.mkdir(parents=True, exist_ok=True)
+            # Get tree output
+            tree_result = run_command(
+                ["tree", "-a", "-I", ".git", "--gitignore", "-n", "-h", "-I", "*_cache"]
+            )
+            tree_text = tree_result.stdout
+            # Write frontmatter and tree output to file
+            with open(rules_dir / "filetree.mdc", "w") as f:
+                f.write("---\ndescription: File tree of the project\nglobs: \n---\n")
+                f.write(tree_text)
+
+            # Log the contents
+            log_message("\nProject structure:")
+            log_message(tree_text)
+
         except Exception as e:
             log_message(f"Failed to generate tree: {e}")
         return None
