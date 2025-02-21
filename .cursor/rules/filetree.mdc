@@ -1,0 +1,71 @@
+---
+description: File tree of the project
+globs: 
+---
+[ 992]  .
+├── [  64]  .benchmarks
+├── [  96]  .cursor
+│   └── [ 224]  rules
+│       ├── [ 821]  0project.mdc
+│       ├── [ 516]  cleanup.mdc
+│       ├── [  54]  filetree.mdc
+│       └── [2.0K]  quality.mdc
+├── [  96]  .github
+│   └── [ 128]  workflows
+│       ├── [2.7K]  push.yml
+│       └── [1.4K]  release.yml
+├── [3.5K]  .gitignore
+├── [ 532]  .pre-commit-config.yaml
+├── [1.0K]  LICENSE
+├── [2.9K]  LOG.md
+├── [ 153]  MANIFEST.in
+├── [ 12K]  README.md
+├── [5.2K]  TODO.md
+├── [   7]  VERSION.txt
+├── [ 11K]  cleanup.py
+├── [  96]  dist
+├── [  96]  examples
+│   └── [ 948]  upload_example.py
+├── [ 306]  filetree.sh
+├── [ 439]  mypy.ini
+├── [6.9K]  pyproject.toml
+├── [ 128]  src
+│   └── [ 384]  twat_fs
+│       ├── [ 447]  __init__.py
+│       ├── [ 733]  __main__.py
+│       ├── [8.9K]  cli.py
+│       ├── [ 128]  data
+│       │   ├── [1.5K]  _test.jpg
+│       │   └── [383K]  test.jpg
+│       ├── [   1]  py.typed
+│       ├── [ 24K]  upload.py
+│       └── [ 640]  upload_providers
+│           ├── [3.5K]  __init__.py
+│           ├── [6.2K]  bashupload.py
+│           ├── [5.3K]  catbox.py
+│           ├── [ 12K]  core.py
+│           ├── [ 20K]  dropbox.py
+│           ├── [8.5K]  fal.py
+│           ├── [5.0K]  filebin.py
+│           ├── [ 10K]  litterbox.py
+│           ├── [6.1K]  pixeldrain.py
+│           ├── [4.0K]  protocols.py
+│           ├── [5.1K]  s3.py
+│           ├── [6.0K]  simple.py
+│           ├── [ 728]  types.py
+│           ├── [4.3K]  uguu.py
+│           ├── [6.9K]  utils.py
+│           └── [4.1K]  www0x0.py
+├── [ 352]  tests
+│   ├── [  63]  __init__.py
+│   ├── [  96]  data
+│   │   └── [ 100]  test.txt
+│   ├── [3.1K]  test_filebin_pixeldrain.py
+│   ├── [9.0K]  test_integration.py
+│   ├── [8.7K]  test_s3_advanced.py
+│   ├── [ 180]  test_twat_fs.py
+│   └── [ 29K]  test_upload.py
+├── [3.0K]  update_providers.py
+└── [382K]  uv.lock
+
+14 directories, 51 files
