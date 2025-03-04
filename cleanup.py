@@ -330,7 +330,7 @@ def repomix(
     compress: bool = True,
     remove_empty_lines: bool = True,
     ignore_patterns: str = ".specstory/**/*.md,.venv/**,_private/**,CLEANUP.txt,**/*.json,*.lock",
-    output_file: str = "twat_search.txt",
+    output_file: str = "REPO_CONTENT.txt",
 ) -> None:
     """Combine repository files into a single text file.
 
@@ -397,6 +397,7 @@ def main() -> NoReturn:
     except Exception as e:
         log_message(f"Error: {e}")
     repomix()
+    sys.stdout.write(Path("CLEANUP.txt").read_text())
     sys.exit(0)  # Ensure we exit with a status code
 
 
