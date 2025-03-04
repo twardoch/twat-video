@@ -57,6 +57,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import NoReturn
+from shutil import which
 
 # Configuration
 IGNORE_PATTERNS = [
@@ -110,7 +111,13 @@ def log_message(message: str) -> None:
 def run_command(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
     """Run a shell command and return the result."""
     try:
-        result = subprocess.run(cmd, check=check, capture_output=True, text=True)
+        result = subprocess.run(
+            cmd,
+            check=check,
+            capture_output=True,
+            text=True,
+            shell=False,  # Explicitly set shell=False for security
+        )
         if result.stdout:
             log_message(result.stdout)
         return result
@@ -125,9 +132,8 @@ def run_command(cmd: list[str], check: bool = True) -> subprocess.CompletedProce
 def check_command_exists(cmd: str) -> bool:
     """Check if a command exists in the system."""
     try:
-        subprocess.run(["which", cmd], check=True, capture_output=True)
-        return True
-    except subprocess.CalledProcessError:
+        return which(cmd) is not None
+    except Exception:
         return False
 
 
@@ -320,6 +326,7 @@ class Cleanup:
 
 
 def repomix(
+    *,
     compress: bool = True,
     remove_empty_lines: bool = True,
     ignore_patterns: str = ".specstory/**/*.md,.venv/**,_private/**,CLEANUP.txt,**/*.json,*.lock",
@@ -390,6 +397,7 @@ def main() -> NoReturn:
     except Exception as e:
         log_message(f"Error: {e}")
     repomix()
+    sys.exit(0)  # Ensure we exit with a status code
 
 
 if __name__ == "__main__":
