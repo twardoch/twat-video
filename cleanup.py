@@ -41,7 +41,7 @@ Workflow Example:
 3. Commit changes: `cleanup.py update`
 4. Push to remote: `cleanup.py push`
 
-The script maintains a CLEANUP.log file that records all operations with timestamps.
+The script maintains a CLEANUP.txt file that records all operations with timestamps.
 It also includes content from README.md at the start and TODO.md at the end of logs
 for context.
 
@@ -69,7 +69,7 @@ IGNORE_PATTERNS = [
     "*.egg-info",
 ]
 REQUIRED_FILES = ["LOG.md", ".cursor/rules/0project.mdc", "TODO.md"]
-LOG_FILE = Path("CLEANUP.log")
+LOG_FILE = Path("CLEANUP.txt")
 
 # Ensure we're working from the script's directory
 os.chdir(Path(__file__).parent)
@@ -319,6 +319,40 @@ class Cleanup:
             log_message(f"Failed to push changes: {e}")
 
 
+def repomix(
+    compress: bool = True,
+    remove_empty_lines: bool = True,
+    ignore_patterns: str = ".specstory/**/*.md,.venv/**,_private/**,CLEANUP.txt,**/*.json,*.lock",
+    output_file: str = "twat_search.txt",
+) -> None:
+    """Combine repository files into a single text file.
+
+    Args:
+        compress: Whether to compress whitespace in output
+        remove_empty_lines: Whether to remove empty lines
+        ignore_patterns: Comma-separated glob patterns of files to ignore
+        output_file: Output file path
+    """
+    try:
+        # Build command
+        cmd = ["repomix"]
+        if compress:
+            cmd.append("--compress")
+        if remove_empty_lines:
+            cmd.append("--remove-empty-lines")
+        if ignore_patterns:
+            cmd.append("-i")
+            cmd.append(ignore_patterns)
+        cmd.extend(["-o", output_file])
+
+        # Run repomix
+        run_command(cmd)
+        log_message(f"Repository content mixed into {output_file}")
+
+    except Exception as e:
+        log_message(f"Failed to mix repository: {e}")
+
+
 def print_usage() -> None:
     """Print usage information."""
     log_message("Usage:")
@@ -353,12 +387,9 @@ def main() -> NoReturn:
             cleanup.push()
         else:
             print_usage()
-            sys.exit(1)
     except Exception as e:
         log_message(f"Error: {e}")
-        sys.exit(1)
-
-    sys.exit(0)
+    repomix()
 
 
 if __name__ == "__main__":
