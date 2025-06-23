@@ -42,7 +42,6 @@ classifiers = [
 # -------------------
 # External packages required for the project to function
 dependencies = [
-    "twat>=1.8.1",           # Main twat package
 ]
 
 
@@ -61,9 +60,8 @@ Source = "https://github.com/twardoch/twat-video"
 
 [tool.hatch.version]
 source = "vcs"
-
-[tool.hatch.version.raw-options]
-version_scheme = "post-release"
+# raw-options are not needed for basic hatch-vcs usage with version-file
+# and the previous option was for setuptools-scm
 
 [tool.hatch.build.hooks.vcs]
 version-file = "src/twat_video/__version__.py"
@@ -76,14 +74,23 @@ dependencies = [
     "pytest-cov",
     "mypy>=1.0.0",
     "ruff>=0.1.0",
+    "uv>=0.1.17", # Added uv
 ]
 
 
 [tool.hatch.envs.default.scripts]
-test = "pytest {args:tests}"
-test-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=src/twat_video --cov=tests {args:tests}"
-type-check = "mypy src/twat_video tests"
-lint = ["ruff check src/twat_video tests", "ruff format src/twat_video tests"]
+# Ensure uv is used for running tools if they are managed by hatch's environment
+# Or explicitly use 'uv run' for tools that might not be directly on PATH from hatch env
+test = "uv run pytest {args:tests}"
+test-cov = "uv run pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=src/twat_video --cov=tests {args:tests}"
+type-check = "uv run mypy src/twat_video tests"
+# For linting, ruff is typically installed into the environment by Hatch.
+# If Hatch places binaries in a way that `uv run` is beneficial, use it. Otherwise, direct call is fine.
+# Assuming direct call is fine after Hatch setup for these.
+lint = ["uv run ruff check src/twat_video tests", "uv run ruff format --check src/twat_video tests"]
+format = "uv run ruff format src/twat_video tests" # Added explicit format script
+# Script to install/update tools using uv
+tools-install = "uv pip install --upgrade pytest pytest-cov mypy ruff"
 
 
 [[tool.hatch.envs.all.matrix]]
@@ -95,14 +102,17 @@ detached = true
 dependencies = [
     "mypy>=1.0.0",
     "ruff>=0.1.0",
+    "uv>=0.1.17", # Added uv
 ]
 
 
 [tool.hatch.envs.lint.scripts]
-typing = "mypy --install-types --non-interactive {args:src/twat_video tests}"
-style = ["ruff check {args:.}", "ruff format {args:.}"]
-fmt = ["ruff format {args:.}", "ruff check --fix {args:.}"]
+typing = "uv run mypy --install-types --non-interactive {args:src/twat_video tests}"
+style = ["uv run ruff check {args:.}", "uv run ruff format --check {args:.}"] # Added --check
+fmt = ["uv run ruff format {args:.}", "uv run ruff check --fix {args:.}"]
 all = ["style", "typing"]
+# Script to install/update linting tools using uv
+tools-install-lint = "uv pip install --upgrade mypy ruff"
 
 
 [tool.ruff]
@@ -205,18 +215,17 @@ dev = [
     "mypy>=1.0.0",
 ]
 
-all = [
-    "twat>=1.0.0",
-]
+all = []
 
 [tool.hatch.envs.test]
 dependencies = [".[test]"]
 
 [tool.hatch.envs.test.scripts]
-test = "python -m pytest -n auto {args:tests}"
-test-cov = "python -m pytest -n auto --cov-report=term-missing --cov-config=pyproject.toml --cov=src/twat_video --cov=tests {args:tests}"
-bench = "python -m pytest -v -p no:briefcase tests/test_benchmark.py --benchmark-only"
-bench-save = "python -m pytest -v -p no:briefcase tests/test_benchmark.py --benchmark-only --benchmark-json=benchmark/results.json"
+# Use uv run for consistency, though python -m pytest is also fine as pytest is a dependency.
+test = "uv run pytest -n auto {args:tests}"
+test-cov = "uv run pytest -n auto --cov-report=term-missing --cov-config=pyproject.toml --cov=src/twat_video --cov=tests {args:tests}"
+bench = "uv run pytest -v -p no:briefcase tests/test_benchmark.py --benchmark-only {args}"
+bench-save = "uv run pytest -v -p no:briefcase tests/test_benchmark.py --benchmark-only --benchmark-json=benchmark/results.json {args}"
 
 [tool.pytest.ini_options]
 markers = ["benchmark: marks tests as benchmarks (select with '-m benchmark')"]
