@@ -38,6 +38,19 @@ jobs:
           version: "latest"
           args: "format --check --respect-gitignore"
 
+      - name: Set up Python for MyPy # MyPy might need Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' # Or matrix.python-version if run for all
+
+      - name: Install MyPy and dependencies for type checking
+        run: |
+          uv pip install mypy # Installs mypy
+          uv pip install --system .[dev] # Install project dev dependencies including type stubs if any
+
+      - name: Run MyPy
+        run: mypy src/twat_video tests
+
   test:
     name: Run Tests
     needs: quality

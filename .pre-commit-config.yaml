@@ -15,4 +15,16 @@ repos:
       - id: debug-statements
       - id: check-case-conflict
       - id: mixed-line-ending
-        args: [--fix=lf] 
+        args: [--fix=lf]
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0 # Use an appropriate version for mypy
+    hooks:
+      - id: mypy
+        args: [--install-types, --non-interactive, --ignore-missing-imports]
+        # You might need to specify `files` or `types` if it tries to check too many things
+        # Or configure mypy via pyproject.toml to include/exclude files
+        additional_dependencies: [
+          # Add any type stubs or plugins mypy needs, e.g.
+          # "types-requests",
+          # "pydantic" (if you use pydantic and its mypy plugin)
+        ]
