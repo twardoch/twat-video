@@ -8,8 +8,7 @@
 # ///
 # this_file: cleanup.py
 
-"""
-Cleanup tool for managing repository tasks and maintaining code quality.
+"""Cleanup tool for managing repository tasks and maintaining code quality.
 
 This script provides a comprehensive set of commands for repository maintenance:
 
@@ -41,7 +40,7 @@ Workflow Example:
 3. Commit changes: `cleanup.py update`
 4. Push to remote: `cleanup.py push`
 
-The script maintains a CLEANUP.txt file that records all operations with timestamps.
+The script maintains a llms.txt file that records all operations with timestamps.
 It also includes content from README.md at the start and TODO.md at the end of logs
 for context.
 
@@ -54,7 +53,7 @@ Required Files:
 import subprocess
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from pathlib import Path
 from typing import NoReturn
 from shutil import which
@@ -70,7 +69,7 @@ IGNORE_PATTERNS = [
     "*.egg-info",
 ]
 REQUIRED_FILES = ["LOG.md", ".cursor/rules/0project.mdc", "TODO.md"]
-LOG_FILE = Path("CLEANUP.txt")
+LOG_FILE = Path("llms.txt")
 
 # Ensure we're working from the script's directory
 os.chdir(Path(__file__).parent)
@@ -102,7 +101,7 @@ def suffix() -> None:
 
 def log_message(message: str) -> None:
     """Log a message to file and console with timestamp."""
-    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S")
     log_line = f"{timestamp} - {message}\n"
     with LOG_FILE.open("a") as f:
         f.write(log_line)
@@ -160,7 +159,7 @@ class Cleanup:
         """Generate and display tree structure of the project."""
         if not check_command_exists("tree"):
             log_message("Warning: 'tree' command not found. Skipping tree generation.")
-            return None
+            return
 
         try:
             # Create/overwrite the file with YAML frontmatter
@@ -182,7 +181,7 @@ class Cleanup:
 
         except Exception as e:
             log_message(f"Failed to generate tree: {e}")
-        return None
+        return
 
     def _git_status(self) -> bool:
         """Check git status and return True if there are changes."""
@@ -329,7 +328,7 @@ def repomix(
     *,
     compress: bool = True,
     remove_empty_lines: bool = True,
-    ignore_patterns: str = ".specstory/**/*.md,.venv/**,_private/**,CLEANUP.txt,**/*.json,*.lock",
+    ignore_patterns: str = ".specstory/**/*.md,.venv/**,_private/**,llms.txt,**/*.json,*.lock",
     output_file: str = "REPO_CONTENT.txt",
 ) -> None:
     """Combine repository files into a single text file.
@@ -339,6 +338,7 @@ def repomix(
         remove_empty_lines: Whether to remove empty lines
         ignore_patterns: Comma-separated glob patterns of files to ignore
         output_file: Output file path
+
     """
     try:
         # Build command
@@ -397,7 +397,7 @@ def main() -> NoReturn:
     except Exception as e:
         log_message(f"Error: {e}")
     repomix()
-    sys.stdout.write(Path("CLEANUP.txt").read_text())
+    sys.stdout.write(Path("llms.txt").read_text())
     sys.exit(0)  # Ensure we exit with a status code
 
 
