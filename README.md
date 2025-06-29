@@ -1,96 +1,127 @@
-# twat-video: Modern Python Project Scaffold
+# twat-video: Modern Python Project Scaffold & Toolkit
 
 [![Build & Test](https://github.com/twardoch/twat-video/actions/workflows/push.yml/badge.svg)](https://github.com/twardoch/twat-video/actions/workflows/push.yml)
 [![Release](https://github.com/twardoch/twat-video/actions/workflows/release.yml/badge.svg)](https://github.com/twardoch/twat-video/actions/workflows/release.yml)
-[![PyPI version](https://badge.fury.io/py/twat-video.svg)](https://badge.fury.io/py/twat-video) <!-- TODO: Update once actually published -->
+[![PyPI version](https://badge.fury.io/py/twat-video.svg)](https://badge.fury.io/py/twat-video)
 
-`twat-video` is a template repository that provides a modern scaffolding for Python projects. It's designed to kickstart development with best practices for packaging, testing, linting, type checking, versioning, and CI/CD.
+**`twat-video` is a comprehensive template repository and toolkit designed to accelerate the development of modern Python projects. It provides a robust foundation built upon current best practices for packaging, dependency management, code quality, testing, and automated workflows.**
 
-## Rationale
+This project serves as both a ready-to-use scaffold for new Python applications and libraries, and an example of integrating modern Python development tools.
 
-Starting a new Python project often involves repetitive setup of build systems, quality assurance tools, and CI/CD pipelines. This project aims to provide a ready-to-use foundation incorporating:
+## Part 1: For a Wider Audience
 
--   **Modern Packaging:** PEP 621 (`pyproject.toml`) based packaging using [Hatch](https://hatch.pypa.io/) as the build backend.
--   **Fast Dependency Management:** Uses [uv](https://github.com/astral-sh/uv) for fast Python package installation and resolution.
--   **Automated Versioning:** Semantic versioning based on git tags, powered by `hatch-vcs`.
--   **Quality Assurance:**
-    -   Linting and formatting with [Ruff](https://github.com/astral-sh/ruff).
-    -   Type checking with [MyPy](http://mypy-lang.org/).
-    -   Testing with [Pytest](https://pytest.org/).
--   **CI/CD:** GitHub Actions workflows for automated testing, building, and releasing to PyPI.
--   **Pre-commit Hooks:** Ensures code quality before commits.
+### What is `twat-video`?
 
-This scaffold allows developers to focus on writing application logic rather than boilerplate.
+At its core, `twat-video` is a **project starter template**. Think of it as a pre-configured blueprint for your next Python project. Instead of setting up build systems, linters, testers, and automation from scratch, `twat-video` gives you a fully equipped workshop.
 
-## Features
+It also includes a sample Python module (`src/twat_video/twat_video.py`) that demonstrates some of these features and can be replaced with your actual project code.
 
--   PEP 621 compliant `pyproject.toml`.
--   Build backend: Hatchling with `hatch-vcs` for versioning.
--   Package management and virtual environments with `uv`.
--   Comprehensive Hatch scripts for common development tasks (testing, linting, building).
--   Pre-configured Ruff for linting and formatting.
--   Pre-configured MyPy for static type checking.
--   Example Pytest setup with basic tests.
--   GitHub Actions for:
-    -   Running linters and type checkers.
-    -   Running tests across multiple Python versions.
-    -   Building distributions (sdist and wheel).
-    -   Publishing to PyPI on tagged commits.
--   Pre-commit hooks for Ruff and MyPy.
--   Clear documentation structure (this README).
+### Who is it for?
 
-## Installation
+`twat-video` is for **Python developers** who want to:
 
-### For Users (from PyPI)
+*   Quickly bootstrap new projects.
+*   Adhere to modern Python development standards.
+*   Incorporate best practices for code quality and maintainability from day one.
+*   Spend more time writing application logic and less time on project setup.
+*   Learn how to use tools like Hatch, `uv`, Ruff, MyPy, and GitHub Actions effectively.
 
-Once the package is published to PyPI, users can install it using `pip` or `uv`:
+Whether you're building a small utility, a complex library, or a web application, `twat-video` provides a solid starting point.
 
-```bash
-pip install twat-video
-```
-Or with `uv`:
-```bash
-uv pip install twat-video
-```
+### Why is it useful?
 
-*(Note: Replace `twat-video` with your actual package name if you rename this scaffold).*
+Starting a Python project correctly involves many decisions and setup tasks. `twat-video` simplifies this by providing:
 
-### For Developers (Editable Install from Local Clone)
+*   **Speed & Efficiency:** Get your project up and running in minutes, not hours.
+*   **Best Practices Included:** Built-in support for modern packaging (PEP 621), linting, formatting, type checking, and testing.
+*   **Fast Dependency Management:** Utilizes `uv` for rapid package installation and virtual environment management.
+*   **Automated Quality Checks:** Pre-commit hooks and CI pipelines ensure code quality before and after changes are integrated.
+*   **Reproducible Builds:** Consistent development and build environments using Hatch.
+*   **Automated Versioning & Release:** Semantic versioning based on git tags and automated publishing to PyPI.
+*   **Learning Resource:** Serves as a practical example of a well-structured Python project.
 
-1.  **Clone the repository:**
+### Installation and Setup
+
+There are two main ways to use `twat-video`: as a template for a new project, or by cloning it to explore its features.
+
+#### Using `twat-video` as a Template (Recommended for New Projects)
+
+1.  **Create a new repository from this template:**
+    *   Navigate to the [main page of the `twat-video` repository](https://github.com/twardoch/twat-video) on GitHub.
+    *   Click the "Use this template" button and select "Create a new repository".
+    *   Choose an owner, repository name, and other settings for your new project.
+
+2.  **Clone your newly created repository:**
     ```bash
-    git clone https://github.com/twardoch/twat-video.git # Or your fork
-    cd twat-video
+    git clone https://github.com/YOUR_USERNAME/YOUR_NEW_REPOSITORY_NAME.git
+    cd YOUR_NEW_REPOSITORY_NAME
     ```
 
-2.  **Set up the development environment:**
-    This project uses [Hatch](https://hatch.pypa.io/) for managing development environments and running tasks. It's recommended to install Hatch first. You can use `uv` or `pip` to install Hatch:
+3.  **Set up the development environment:**
+    This project uses [Hatch](https://hatch.pypa.io/) for environment and project management. It's recommended to install Hatch first. `uv` is used by Hatch for faster operations if available.
     ```bash
-    uv pip install hatch  # Recommended
-    # or
-    # pip install hatch
+    # Install Hatch (using uv is recommended)
+    uv pip install hatch
+    # Or using pip
+    # python -m pip install hatch
     ```
-
-3.  **Activate the Hatch environment:**
-    Hatch will automatically create and manage a virtual environment for the project using `uv` by default if `uv` is available and configured in `hatch config set dirs.env.virtual.uv true` (or if Hatch's uv feature detection works).
+    Once Hatch is installed, activate the project's managed environment:
     ```bash
     hatch shell
     ```
-    This command drops you into a shell with the project's virtual environment activated and the project installed in editable mode. Dependencies, including development tools, will be installed.
+    This command creates a virtual environment (using `uv` if configured), installs all dependencies (including development tools), and makes your project editable within this environment.
 
-    Alternatively, if you prefer to manage your virtual environment manually (e.g., with `uv venv`):
+#### For Developers (Exploring or Contributing to `twat-video` itself)
+
+1.  **Clone the repository:**
     ```bash
-    uv venv .venv # Create a virtual environment
-    source .venv/bin/activate # Activate it
-    uv pip install -e .[dev,test] # Install package in editable mode with dev/test dependencies
+    git clone https://github.com/twardoch/twat-video.git
+    cd twat-video
     ```
 
-## Usage
+2.  **Set up the development environment (as above):**
+    ```bash
+    uv pip install hatch  # Or pip install hatch
+    hatch shell
+    ```
 
-This scaffold includes placeholder logic. Here's how you might import and use its components:
+### How to Use It
+
+#### As a Project Scaffold
+
+Once you've created your project from the template and activated the Hatch shell:
+
+1.  **Rename the package:**
+    *   The default package name is `twat_video`. You'll likely want to rename this to match your project.
+    *   Search and replace `twat_video` and `twat-video` (in `pyproject.toml` and directory names) with your desired project name.
+    *   Key files/directories to update:
+        *   `src/twat_video` directory -> `src/your_package_name`
+        *   `pyproject.toml`:
+            *   `name = "twat-video"` -> `name = "your-project-name"`
+            *   `tool.hatch.build.targets.wheel.packages = ["src/twat_video"]` -> `tool.hatch.build.targets.wheel.packages = ["src/your_package_name"]`
+            *   `tool.hatch.build.hooks.vcs.version-file = "src/twat_video/__version__.py"` -> `tool.hatch.build.hooks.vcs.version-file = "src/your_package_name/__version__.py"`
+            *   References in `[tool.ruff.lint.isort]`, `[tool.coverage.run]`, `[tool.coverage.paths]`.
+        *   `tests/` directory: update imports.
+        *   `src/your_package_name/__init__.py`: update imports if necessary.
+        *   GitHub Workflows (`.github/workflows/*.yml`): update paths if they reference `src/twat_video`.
+
+2.  **Customize `pyproject.toml`:**
+    *   Update metadata like `description`, `authors`, `keywords`, etc.
+    *   Add your project's runtime dependencies to the `[project.dependencies]` list.
+
+3.  **Develop your code:**
+    *   Replace the example code in `src/your_package_name/your_module.py` (formerly `src/twat_video/twat_video.py`) with your actual application logic.
+    *   Add new modules and packages within `src/your_package_name/` as needed.
+
+4.  **Write tests:**
+    *   Add your tests to the `tests/` directory. The example `tests/test_twat_video.py` can be a starting point.
+
+#### Interacting with the Example Code (Programmatic Usage)
+
+The included `twat_video.py` module provides a simple `Config` dataclass, a `process_data` function, and a `main` function to demonstrate basic structure and logging.
 
 ```python
-from twat_video import Config, process_data, main, __version__
+from twat_video import Config, process_data, main, __version__ # Or your_package_name
 
 # Get the current version (derived from git tags)
 print(f"Version: {__version__}")
@@ -111,149 +142,172 @@ except ValueError as e:
 # main()
 ```
 
-Replace this placeholder logic with your project's actual functionality.
+#### Development Tasks (CLI with Hatch)
 
-## Development
+Hatch scripts simplify common development tasks. Run these within the activated Hatch shell (`hatch shell`):
 
-This project uses [Hatch](https://hatch.pypa.io/) for most development tasks, which in turn utilizes `uv` for faster environment and package management where configured.
-
-### Initial Setup
-
-1.  **Install Hatch:**
+*   **Run tests:**
     ```bash
-    uv pip install hatch  # Or pip install hatch
+    hatch run test  # Uses uv run pytest ...
     ```
-2.  **Install pre-commit hooks** (optional but recommended):
-    Ensure `pre-commit` is installed (`uv pip install pre-commit` or `pip install pre-commit`), then run:
+*   **Run linters and formatters:**
     ```bash
-    pre-commit install
+    hatch run lint   # Runs Ruff check and format check
+    hatch run format # Applies Ruff formatting
     ```
-    This will run checks automatically before each commit.
-
-### Hatch Environments and Scripts
-
-Hatch environments are defined in `pyproject.toml`. You can activate the default environment (which includes test and linting tools) using:
-
-```bash
-hatch shell
-```
-
-Common tasks are available as Hatch scripts:
-
--   **Run tests:**
+*   **Run type checker:**
     ```bash
-    hatch run default:test
-    # or with specific pytest arguments:
-    # hatch run default:test -- -k "some_test_name"
+    hatch run type-check # Runs MyPy
     ```
-
--   **Run tests with coverage:**
-    ```bash
-    hatch run default:test-cov
-    ```
-    (Coverage configuration is in `pyproject.toml` under `[tool.coverage]`)
-
--   **Run linters (Ruff check and format check):**
-    ```bash
-    hatch run default:lint
-    ```
-
--   **Apply formatting (Ruff format):**
-    ```bash
-    hatch run default:format
-    ```
-
--   **Run type checker (MyPy):**
-    ```bash
-    hatch run default:type-check
-    ```
-
--   **Build distributions (sdist and wheel):**
+*   **Build distributions:**
     ```bash
     hatch build
     ```
-    Outputs will be in the `dist/` directory.
+    (Outputs will be in `dist/`)
 
--   **Clean build artifacts:**
+Refer to the "Hatch Environments and Scripts" section in Part 2 for more details.
+
+## Part 2: Technical Details
+
+This section describes how the `twat-video` scaffold is structured and how its components work together.
+
+### Code Architecture
+
+*   **`pyproject.toml`**: This is the central configuration file for the project, adhering to PEP 517, PEP 518, and PEP 621.
+    *   **`[build-system]`**: Defines the build backend (Hatchling) and its requirements (`hatch-vcs` for versioning).
+    *   **`[project]`**: Contains project metadata such as name, dynamic version, dependencies, Python version compatibility, license, and classifiers.
+    *   **`[tool.hatch.version]`**: Configures `hatch-vcs` to derive the project version dynamically from `git` tags. The version format follows Semantic Versioning.
+    *   **`[tool.hatch.build.hooks.vcs]`**: Specifies the file where `hatch-vcs` writes the version information (e.g., `src/twat_video/__version__.py`). This file should not be manually edited and is typically gitignored (though tracked if it's essential for non-VCS builds).
+    *   **`[tool.hatch.envs.*]`**: Defines Hatch environments for development, testing, and linting, along with scripts for common tasks. These scripts often leverage `uv` for faster execution.
+    *   **`[tool.ruff]`**: Configuration for the [Ruff](https://github.com/astral-sh/ruff) linter and formatter, including selected rules, line length, and target Python version.
+    *   **`[tool.mypy]`**: Configuration for the [MyPy](http://mypy-lang.org/) static type checker.
+    *   **`[tool.pytest.ini_options]`**: Settings for [Pytest](https://pytest.org/), such as test paths and markers.
+    *   **`[tool.coverage]`**: Configuration for code coverage analysis with `pytest-cov`.
+
+*   **`src/twat_video/`** (or `src/your_package_name/`): This directory contains the main source code of the Python package.
+    *   `__init__.py`: Makes the directory a Python package. It typically imports key components from other modules within the package and defines `__all__` to control what `import *` exposes. It also imports `__version__` from the `__version__.py` file.
+    *   `__version__.py`: This file is automatically generated or updated by `hatch-vcs` during the build process (and potentially on version bumps if configured). It contains the `__version__` string. **Do not edit this file manually.**
+    *   `twat_video.py` (example module): Contains placeholder logic, including a `Config` dataclass, a `process_data` function, and a `main` entry point. This is where you'd start replacing or adding your project's code.
+
+*   **`tests/`**: This directory houses all automated tests.
+    *   `test_twat_video.py` (example tests): Provides basic unit tests for the example logic in `twat_video.py` using Pytest.
+
+### Development Workflow & Quality Assurance
+
+`twat-video` is designed for a streamlined development workflow with a strong emphasis on code quality.
+
+*   **Hatch Environments:**
+    Hatch manages isolated development environments defined in `pyproject.toml`.
+    *   `default`: The primary environment for general development, including tools for testing, linting, and type checking. Activate with `hatch shell`.
+    *   `lint`: A specialized environment for linting and formatting tasks, often used in CI. Access its scripts via `hatch run lint:<script_name>`.
+    *   `test`: A specialized environment for running tests, often used in CI. Access its scripts via `hatch run test:<script_name>`.
+    Hatch uses `uv` by default (if available and configured via `hatch config set dirs.env.virtual.uv true` or auto-detected) for creating and managing these environments, significantly speeding up dependency installation.
+
+*   **Hatch Scripts:**
+    Common tasks are automated via scripts defined under `[tool.hatch.envs.*.scripts]` in `pyproject.toml`. These are typically run using `hatch run <env_name>:<script_name>` or simply `hatch run <script_name>` if the script is in the `default` environment and you're in the Hatch shell.
+    *   `test`: `uv run pytest {args:tests}` - Runs Pytest.
+    *   `test-cov`: `uv run pytest --cov...` - Runs Pytest with coverage.
+    *   `type-check`: `uv run mypy src/twat_video tests` - Runs MyPy.
+    *   `lint`: Combines `ruff check` and `ruff format --check`.
+    *   `format`: `uv run ruff format src/twat_video tests` - Applies Ruff formatting.
+    *   `build`: `hatch build` - Creates sdist and wheel distributions in `dist/`.
+    *   `clean`: `hatch clean` - Removes build artifacts.
+
+*   **Pre-commit Hooks (`.pre-commit-config.yaml`):**
+    To ensure code quality *before* changes are committed, pre-commit hooks are configured.
+    1.  Install pre-commit: `uv pip install pre-commit` (or `pip install pre-commit`).
+    2.  Install hooks: `pre-commit install`.
+    This setup automatically runs Ruff (for linting and formatting) and MyPy (for type checking) on staged files during `git commit`. This helps catch issues early and maintain consistent code style.
+    The configuration includes:
+    *   Ruff for formatting and linting.
+    *   MyPy for static type checking.
+    *   Standard hooks like `check-yaml`, `check-toml`, `check-added-large-files`.
+
+### CI/CD Pipeline (GitHub Actions)
+
+The `.github/workflows/` directory contains GitHub Actions workflows for continuous integration and deployment.
+
+*   **`push.yml` (Build & Test Workflow):**
+    *   **Triggers:** Runs on pushes and pull requests to the `main` branch. Also runnable via `workflow_dispatch`.
+    *   **Jobs:**
+        1.  `quality`:
+            *   Checks out code.
+            *   Runs Ruff linter (`ruff check`).
+            *   Runs Ruff formatter check (`ruff format --check`).
+            *   Sets up Python and installs MyPy.
+            *   Runs MyPy for static type checking on `src` and `tests`.
+        2.  `test`: (Depends on `quality`)
+            *   Runs in a matrix across multiple Python versions (e.g., 3.10, 3.11, 3.12) and OS (e.g., ubuntu-latest).
+            *   Sets up Python and `uv`.
+            *   Installs test dependencies using `uv pip install .[test]`.
+            *   Runs Pytest with coverage, generating an XML coverage report.
+            *   Uploads the coverage report as an artifact.
+        3.  `build`: (Depends on `test`)
+            *   Sets up Python and `uv`.
+            *   Installs build tools (`build`, `hatchling`, `hatch-vcs`).
+            *   Builds sdist and wheel distributions using `python -m build`.
+            *   Uploads distribution files as an artifact.
+
+*   **`release.yml` (Release Workflow):**
+    *   **Triggers:** Runs when a new tag matching the pattern `v*` (e.g., `v0.1.0`) is pushed.
+    *   **Permissions:** Requires `id-token: write` for OIDC publication to PyPI and `contents: write` for creating GitHub Releases.
+    *   **Environment:** Configured for PyPI publishing, requiring a `PYPI_TOKEN` secret.
+    *   **Jobs:**
+        1.  `release`:
+            *   Checks out code (fetches all history for `hatch-vcs`).
+            *   Sets up Python and `uv`.
+            *   Installs build tools.
+            *   Builds sdist and wheel distributions.
+            *   Verifies that distribution files were created.
+            *   Publishes the distributions to PyPI using `pypa/gh-action-pypi-publish`.
+            *   Creates a GitHub Release using `softprops/action-gh-release`, automatically generating release notes from commits since the last tag.
+
+### Coding and Contribution Rules
+
+Contributions are highly encouraged! Please adhere to the following:
+
+1.  **Fork the Repository:** Create your own fork of `twat-video` on GitHub.
+2.  **Clone Your Fork:** `git clone https://github.com/YOUR_USERNAME/twat-video.git`
+3.  **Set Up Environment:**
     ```bash
-    hatch clean
+    uv pip install hatch # if not already installed
+    cd twat-video
+    hatch shell
     ```
-
--   **Update development tools (pytest, mypy, ruff):**
+4.  **Install Pre-commit Hooks:**
     ```bash
-    hatch run default:tools-install
+    uv pip install pre-commit
+    pre-commit install
     ```
+5.  **Create a Feature Branch:** `git checkout -b feature/your-amazing-feature` or `bugfix/fix-that-bug`.
+6.  **Develop:**
+    *   Write clean, maintainable code.
+    *   Include comprehensive tests for new features or bug fixes in the `tests/` directory.
+    *   Update documentation (README.md, docstrings, etc.) as necessary.
+7.  **Ensure Quality:**
+    *   **Formatting & Linting:** Run `hatch run format` and `hatch run lint`. Pre-commit hooks should handle this automatically.
+    *   **Type Checking:** Run `hatch run type-check`. Ensure MyPy passes.
+    *   **Tests:** Run `hatch run test`. Ensure all tests pass and coverage is maintained or improved.
+8.  **Commit Changes:** Write clear, descriptive commit messages.
+9.  **Push to Your Fork:** `git push origin feature/your-amazing-feature`.
+10. **Create a Pull Request (PR):** Submit a PR from your fork's branch to the `main` branch of the original `twardoch/twat-video` repository.
+11. **CI Checks & Review:** Ensure all CI checks pass on your PR. Address any feedback from reviewers.
 
-There's also a dedicated `lint` environment for more focused linting tasks (e.g., in CI):
-```bash
-hatch run lint:all # Runs all linting and typing checks
-hatch run lint:style # Runs ruff check and ruff format --check
-hatch run lint:fmt # Applies formatting and fixes with ruff
-hatch run lint:typing # Runs mypy
-```
+#### Versioning and Releases
 
-Refer to `pyproject.toml` under `[tool.hatch.envs.*.scripts]` for all available scripts.
-
-## Codebase Structure (Technical Explanation)
-
--   **`.github/workflows/`**: Contains GitHub Actions workflows.
-    -   `push.yml`: Runs on pushes and pull requests to `main`. Executes linters, type checkers, and tests across multiple Python versions. Also builds the package.
-    -   `release.yml`: Runs on tagged commits (e.g., `v1.2.3`). Builds and publishes the package to PyPI.
--   **`.gitignore`**: Specifies intentionally untracked files that Git should ignore.
--   **`.pre-commit-config.yaml`**: Configuration for pre-commit hooks (Ruff, MyPy).
--   **`LICENSE`**: Project license file (default is MIT).
--   **`README.md`**: This file – project documentation.
--   **`pyproject.toml`**: The heart of the project configuration.
-    -   `[build-system]`: Specifies build dependencies (Hatchling, hatch-vcs).
-    -   `[project]`: PEP 621 metadata (name, version (dynamic), dependencies, classifiers, etc.).
-    -   `[tool.hatch.version]`: Configures `hatch-vcs` to derive version from git tags.
-    -   `[tool.hatch.build.hooks.vcs]`: Tells `hatch-vcs` where to write the version file (`src/twat_video/__version__.py`).
-    -   `[tool.hatch.envs.*]`: Defines Hatch environments and scripts for development tasks (e.g., `default`, `lint`, `test`).
-    -   `[tool.ruff]`: Configuration for Ruff linter and formatter.
-    -   `[tool.mypy]`: Configuration for MyPy static type checker.
-    -   `[tool.pytest.ini_options]`: Configuration for Pytest.
-    -   `[tool.coverage]`: Configuration for code coverage.
--   **`src/twat_video/`**: Main package source code directory.
-    -   `__init__.py`: Makes the directory a package and exposes public interfaces. Imports version from `__version__.py`.
-    -   `__version__.py`: Version file automatically generated by `hatch-vcs` during the build process. **Do not edit manually.**
-    -   `twat_video.py`: Example module with placeholder logic.
--   **`tests/`**: Contains test files.
-    -   `test_twat_video.py`: Example tests for the placeholder logic.
-
-## Contribution Guidelines
-
-Contributions are welcome! Please follow these guidelines:
-
-1.  **Fork the repository** on GitHub.
-2.  **Clone your fork** locally: `git clone https://github.com/YOUR_USERNAME/twat-video.git`
-3.  **Set up the development environment** as described in the "Development" section (install Hatch, run `hatch shell`).
-4.  **Install pre-commit hooks:** `pre-commit install`
-5.  **Create a new branch** for your feature or bug fix: `git checkout -b feature/your-feature-name` or `bugfix/your-bug-fix`.
-6.  **Make your changes.** Write code, add tests, and update documentation as needed.
-7.  **Ensure code quality:**
-    -   Run linters: `hatch run default:lint`
-    -   Apply formatting: `hatch run default:format`
-    -   Run type checker: `hatch run default:type-check`
-    -   Run tests: `hatch run default:test` (ensure all tests pass and coverage is maintained or improved).
-    -   Pre-commit hooks should also run automatically when you `git commit`.
-8.  **Commit your changes** with a clear and descriptive commit message.
-9.  **Push your branch** to your fork: `git push origin feature/your-feature-name`.
-10. **Create a Pull Request** from your fork's branch to the `main` branch of the original `twardoch/twat-video` repository.
-11. **Wait for CI checks** to pass and for a review. Address any feedback.
-
-### Versioning and Releases
-
--   This project uses **semantic versioning (SemVer)**.
--   The version is automatically determined from `git` tags using `hatch-vcs`.
--   To make a new release:
-    1.  Ensure all changes are merged to `main` and `main` is up-to-date locally.
-    2.  Create an annotated git tag: `git tag -a vX.Y.Z -m "Version X.Y.Z"` (e.g., `git tag -a v0.1.0 -m "Version 0.1.0"`).
-    3.  Push the tag to GitHub: `git push origin vX.Y.Z`.
-    4.  The `release.yml` GitHub Actions workflow will automatically build the package and publish it to PyPI. It will also create a GitHub Release.
+*   This project follows **Semantic Versioning (SemVer)** (e.g., `vX.Y.Z`).
+*   The version is dynamically managed by `hatch-vcs` based on `git` tags.
+*   To make a new release:
+    1.  Ensure all changes are merged into the `main` branch.
+    2.  Pull the latest `main` branch locally: `git checkout main && git pull origin main`.
+    3.  Create an annotated git tag: `git tag -a vX.Y.Z -m "Release version X.Y.Z"` (e.g., `git tag -a v0.1.0 -m "Release version 0.1.0"`).
+    4.  Push the tag to GitHub: `git push origin vX.Y.Z`.
+    5.  The `release.yml` GitHub Actions workflow will automatically build the package, publish it to PyPI, and create a GitHub Release.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 ---
 
-*This README provides a comprehensive overview. Adapt and update it as your project evolves.*
+*This README provides a comprehensive overview of the `twat-video` project scaffold. Adapt and update it as your project evolves from this template.*
