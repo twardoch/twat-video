@@ -42,6 +42,7 @@ classifiers = [
 # -------------------
 # External packages required for the project to function
 dependencies = [
+    "click>=8.0.0",  # For CLI interface
 ]
 
 
@@ -54,6 +55,9 @@ email = "adam+github@twardoch.com"
 Documentation = "https://github.com/twardoch/twat-video#readme"
 Issues = "https://github.com/twardoch/twat-video/issues"
 Source = "https://github.com/twardoch/twat-video"
+
+[project.scripts]
+twat-video = "twat_video.cli:main"
 
 
 
@@ -215,7 +219,19 @@ dev = [
     "mypy>=1.0.0",
 ]
 
-all = []
+build = [
+    "build>=0.10.0",
+    "hatchling>=1.27.0",
+    "hatch-vcs>=0.4.0",
+    "twine>=4.0.0",
+]
+
+binary = [
+    "pyinstaller>=6.0.0",
+    "cx-freeze>=6.15.0",
+]
+
+all = ["test", "dev", "build", "binary"]
 
 [tool.hatch.envs.test]
 dependencies = [".[test]"]
