@@ -314,3 +314,4 @@ Thumbs.db
 __version__.py
 _private
 VERSION.txt
+dist/
