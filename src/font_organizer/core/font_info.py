@@ -52,7 +52,7 @@ class FontWeight(Enum):
     def from_string(cls, weight_str: str) -> FontWeight:
         """Parse font weight from string."""
         weight_str = weight_str.lower().strip()
-        
+
         # Map common weight names
         weight_map = {
             "thin": cls.THIN,
@@ -76,7 +76,7 @@ class FontWeight(Enum):
             "black": cls.BLACK,
             "heavy": cls.BLACK,
         }
-        
+
         return weight_map.get(weight_str, cls.REGULAR)
 
 
@@ -89,37 +89,37 @@ class FontMetadata:
     subfamily: str = ""
     full_name: str = ""
     postscript_name: str = ""
-    
+
     # Style information
     style: FontStyle = FontStyle.REGULAR
     weight: FontWeight = FontWeight.REGULAR
     width: str = "Normal"
-    
+
     # Version and vendor
     version: str = ""
     vendor: str = ""
     designer: str = ""
-    
+
     # Copyright and license
     copyright: str = ""
     license: str = ""
     license_url: str = ""
-    
+
     # Technical details
     units_per_em: int = 0
     ascent: int = 0
     descent: int = 0
     line_gap: int = 0
-    
+
     # Character coverage
     glyph_count: int = 0
     unicode_ranges: list[tuple[int, int]] = field(default_factory=list)
-    
+
     # OpenType features
     features: list[str] = field(default_factory=list)
     scripts: list[str] = field(default_factory=list)
     languages: list[str] = field(default_factory=list)
-    
+
     # File information
     format: str = ""
     file_size: int = 0
@@ -132,19 +132,19 @@ class FontInfo:
     def __init__(self, font_path: str | Path) -> None:
         """
         Initialize FontInfo with a font file path.
-        
+
         Args:
             font_path: Path to the font file.
-            
+
         Raises:
             FontNotFoundError: If the font file doesn't exist.
             FontParseError: If the font file cannot be parsed.
         """
         self.path = Path(font_path)
-        
+
         if not self.path.exists():
             raise FontNotFoundError(str(self.path))
-        
+
         self._font: TTFont | None = None
         self._metadata: FontMetadata | None = None
         self._load_font()
@@ -169,7 +169,7 @@ class FontInfo:
         """Get a name record from the font's name table."""
         if "name" not in self._font:
             return ""
-        
+
         name_table: table__n_a_m_e = self._font["name"]
         for record in name_table.names:
             if record.nameID == name_id and record.platformID == platform_id:
@@ -182,28 +182,30 @@ class FontInfo:
     def _extract_metadata(self) -> FontMetadata:
         """Extract metadata from the font."""
         metadata = FontMetadata()
-        
+
         # File information
         metadata.file_size = self.path.stat().st_size
         metadata.file_hash = self._calculate_file_hash()
         metadata.format = self.path.suffix[1:].upper()
-        
+
         # Basic names
         metadata.family = self._get_name_record(1) or self.path.stem
         metadata.subfamily = self._get_name_record(2) or "Regular"
         metadata.full_name = self._get_name_record(4) or metadata.family
-        metadata.postscript_name = self._get_name_record(6) or metadata.family.replace(" ", "")
-        
+        metadata.postscript_name = self._get_name_record(6) or metadata.family.replace(
+            " ", ""
+        )
+
         # Version and vendor
         metadata.version = self._get_name_record(5)
         metadata.vendor = self._get_name_record(8)
         metadata.designer = self._get_name_record(9)
-        
+
         # Copyright and license
         metadata.copyright = self._get_name_record(0)
         metadata.license = self._get_name_record(13)
         metadata.license_url = self._get_name_record(14)
-        
+
         # Parse style and weight from subfamily
         subfamily_lower = metadata.subfamily.lower()
         if "italic" in subfamily_lower:
@@ -212,7 +214,7 @@ class FontInfo:
             metadata.style = FontStyle.OBLIQUE
         else:
             metadata.style = FontStyle.REGULAR
-        
+
         # Extract weight
         if "OS/2" in self._font:
             weight_value = self._font["OS/2"].usWeightClass
@@ -220,20 +222,20 @@ class FontInfo:
         else:
             # Fallback to parsing from subfamily name
             metadata.weight = FontWeight.from_string(metadata.subfamily)
-        
+
         # Metrics
         if "head" in self._font:
             metadata.units_per_em = self._font["head"].unitsPerEm
-        
+
         if "hhea" in self._font:
             metadata.ascent = self._font["hhea"].ascent
             metadata.descent = self._font["hhea"].descent
             metadata.line_gap = self._font["hhea"].lineGap
-        
+
         # Glyph count
         if "maxp" in self._font:
             metadata.glyph_count = self._font["maxp"].numGlyphs
-        
+
         # Character coverage
         if "cmap" in self._font:
             cmap = self._font["cmap"].getBestCmap()
@@ -244,7 +246,7 @@ class FontInfo:
                 if characters:
                     start = characters[0]
                     end = characters[0]
-                    
+
                     for char in characters[1:]:
                         if char == end + 1:
                             end = char
@@ -252,9 +254,9 @@ class FontInfo:
                             ranges.append((start, end))
                             start = end = char
                     ranges.append((start, end))
-                    
+
                 metadata.unicode_ranges = ranges
-        
+
         # OpenType features
         if "GSUB" in self._font:
             gsub_table = self._font["GSUB"].table
@@ -266,7 +268,7 @@ class FontInfo:
                 metadata.scripts = [
                     s.ScriptTag for s in gsub_table.ScriptList.ScriptRecord
                 ]
-        
+
         return metadata
 
     @property
@@ -327,10 +329,10 @@ class FontInfo:
     def has_character(self, char: str | int) -> bool:
         """
         Check if font supports a specific character.
-        
+
         Args:
             char: Character to check (string or Unicode codepoint).
-            
+
         Returns:
             True if character is supported, False otherwise.
         """
@@ -338,7 +340,7 @@ class FontInfo:
             if len(char) != 1:
                 raise ValueError("Only single characters are supported")
             char = ord(char)
-        
+
         return char in self.characters
 
     def get_info_dict(self) -> dict[str, Any]:

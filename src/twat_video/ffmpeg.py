@@ -28,7 +28,10 @@ def run_command(command: Sequence[str], *, dry_run: bool = False) -> CommandResu
         return CommandResult(cmd, 0, "", "")
     completed = subprocess.run(cmd, check=False, capture_output=True, text=True)  # noqa: S603
     if completed.returncode != 0:
-        msg = completed.stderr.strip() or f"command failed with exit code {completed.returncode}"
+        msg = (
+            completed.stderr.strip()
+            or f"command failed with exit code {completed.returncode}"
+        )
         raise RuntimeError(msg)
     return CommandResult(cmd, completed.returncode, completed.stdout, completed.stderr)
 
@@ -38,9 +41,21 @@ def run_ffmpeg(args: Sequence[str], *, dry_run: bool = False) -> CommandResult:
     return run_command(["ffmpeg", "-hide_banner", *args], dry_run=dry_run)
 
 
-def ffprobe_json(path: str | Path, *, dry_run: bool = False) -> dict[str, Any] | CommandResult:
+def ffprobe_json(
+    path: str | Path, *, dry_run: bool = False
+) -> dict[str, Any] | CommandResult:
     """Probe a media file with ffprobe and return parsed JSON metadata."""
-    command = ["ffprobe", "-hide_banner", "-v", "error", "-show_format", "-show_streams", "-of", "json", str(path)]
+    command = [
+        "ffprobe",
+        "-hide_banner",
+        "-v",
+        "error",
+        "-show_format",
+        "-show_streams",
+        "-of",
+        "json",
+        str(path),
+    ]
     result = run_command(command, dry_run=dry_run)
     if dry_run:
         return result

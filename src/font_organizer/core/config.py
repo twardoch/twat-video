@@ -60,7 +60,7 @@ class Config:
     organize: OrganizeConfig = field(default_factory=OrganizeConfig)
     scan: ScanConfig = field(default_factory=ScanConfig)
     subset: SubsetConfig = field(default_factory=SubsetConfig)
-    
+
     # General settings
     verbose: bool = False
     quiet: bool = False
@@ -77,14 +77,12 @@ class Config:
                 f"Invalid organization scheme: {self.organize.default_scheme}. "
                 f"Must be one of: {', '.join(valid_schemes)}"
             )
-        
+
         # Validate font extensions
         for ext in self.scan.font_extensions:
             if not ext.startswith("."):
-                raise InvalidConfigError(
-                    f"Font extension must start with '.': {ext}"
-                )
-        
+                raise InvalidConfigError(f"Font extension must start with '.': {ext}")
+
         # Validate subset format
         valid_formats = ["ttf", "otf", "woff", "woff2"]
         if self.subset.default_format not in valid_formats:
@@ -130,7 +128,7 @@ class Config:
         organize_data = data.get("organize", {})
         scan_data = data.get("scan", {})
         subset_data = data.get("subset", {})
-        
+
         return cls(
             organize=OrganizeConfig(**organize_data),
             scan=ScanConfig(**scan_data),
@@ -153,13 +151,13 @@ def get_config_path() -> Path:
 def load_config(path: str | Path | None = None) -> Config:
     """
     Load configuration from file.
-    
+
     Args:
         path: Path to configuration file. If None, uses default location.
-        
+
     Returns:
         Configuration object.
-        
+
     Raises:
         InvalidConfigError: If configuration is invalid.
     """
@@ -167,27 +165,25 @@ def load_config(path: str | Path | None = None) -> Config:
         path = get_config_path()
     else:
         path = Path(path)
-    
+
     if not path.exists():
         logger.debug(f"Config file not found at {path}, using defaults")
         return Config()
-    
+
     try:
-        with open(path, "r") as f:
+        with open(path) as f:
             if path.suffix in [".yaml", ".yml"]:
                 data = yaml.safe_load(f) or {}
             elif path.suffix == ".json":
                 data = json.load(f)
             else:
-                raise InvalidConfigError(
-                    f"Unsupported config format: {path.suffix}"
-                )
-        
+                raise InvalidConfigError(f"Unsupported config format: {path.suffix}")
+
         config = Config.from_dict(data)
         config.validate()
         logger.debug(f"Loaded configuration from {path}")
         return config
-        
+
     except (yaml.YAMLError, json.JSONDecodeError) as e:
         raise InvalidConfigError(f"Failed to parse config file: {e}")
     except Exception as e:
@@ -197,11 +193,11 @@ def load_config(path: str | Path | None = None) -> Config:
 def save_config(config: Config, path: str | Path | None = None) -> None:
     """
     Save configuration to file.
-    
+
     Args:
         config: Configuration object to save.
         path: Path to save configuration. If None, uses default location.
-        
+
     Raises:
         InvalidConfigError: If configuration cannot be saved.
     """
@@ -209,27 +205,25 @@ def save_config(config: Config, path: str | Path | None = None) -> None:
         path = get_config_path()
     else:
         path = Path(path)
-    
+
     # Validate before saving
     config.validate()
-    
+
     # Ensure parent directory exists
     path.parent.mkdir(parents=True, exist_ok=True)
-    
+
     try:
         data = config.to_dict()
-        
+
         with open(path, "w") as f:
             if path.suffix in [".yaml", ".yml"]:
                 yaml.dump(data, f, default_flow_style=False, sort_keys=False)
             elif path.suffix == ".json":
                 json.dump(data, f, indent=2)
             else:
-                raise InvalidConfigError(
-                    f"Unsupported config format: {path.suffix}"
-                )
-        
+                raise InvalidConfigError(f"Unsupported config format: {path.suffix}")
+
         logger.debug(f"Saved configuration to {path}")
-        
+
     except Exception as e:
         raise InvalidConfigError(f"Failed to save config: {e}")

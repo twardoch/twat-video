@@ -5,11 +5,21 @@ from pathlib import Path
 
 import pytest
 
-from twat_video import VideoClip, crop_scale, import_audio, merge_by_gap, repair_srt_text, reverse_video, split_segment
+from twat_video import (
+    VideoClip,
+    crop_scale,
+    import_audio,
+    merge_by_gap,
+    repair_srt_text,
+    reverse_video,
+    split_segment,
+)
 
 
 def test_crop_scale_builds_ffmpeg_command() -> None:
-    result = crop_scale("in.mp4", "out.mp4", crop="100:100:0:0", scale="320:240", dry_run=True)
+    result = crop_scale(
+        "in.mp4", "out.mp4", crop="100:100:0:0", scale="320:240", dry_run=True
+    )
     assert result.command[:2] == ["ffmpeg", "-hide_banner"]
     assert "crop=100:100:0:0,scale=320:240" in result.command
 

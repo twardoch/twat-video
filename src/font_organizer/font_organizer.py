@@ -84,7 +84,9 @@ def process_data(
         logger.error(msg)
         raise ValueError(msg)
 
-    logger.info("Processing data with config: %s", config.name if config else "No Config")
+    logger.info(
+        "Processing data with config: %s", config.name if config else "No Config"
+    )
     logger.debug("Input data: %s", data)
 
     # --- TODO: Implement actual data processing logic here ---

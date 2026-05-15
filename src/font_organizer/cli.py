@@ -27,27 +27,19 @@ logger = logging.getLogger(__name__)
 
 @click.group()
 @click.version_option(version=__version__)
-@click.option(
-    "--verbose", "-v", 
-    is_flag=True, 
-    help="Enable verbose output"
-)
-@click.option(
-    "--quiet", "-q", 
-    is_flag=True, 
-    help="Suppress output"
-)
+@click.option("--verbose", "-v", is_flag=True, help="Enable verbose output")
+@click.option("--quiet", "-q", is_flag=True, help="Suppress output")
 @click.pass_context
 def cli(ctx: click.Context, verbose: bool, quiet: bool) -> None:
     """font-organizer: Modern font organization tool for managing and curating font collections."""
     ctx.ensure_object(dict)
-    
+
     # Configure logging level
     if quiet:
         logging.getLogger().setLevel(logging.ERROR)
     elif verbose:
         logging.getLogger().setLevel(logging.DEBUG)
-    
+
     ctx.obj["verbose"] = verbose
     ctx.obj["quiet"] = quiet
 
@@ -57,63 +49,49 @@ def cli(ctx: click.Context, verbose: bool, quiet: bool) -> None:
 def version(ctx: click.Context) -> None:
     """Show version information."""
     click.echo(f"font-organizer version {__version__}")
-    
+
     if ctx.obj.get("verbose"):
         click.echo(f"Python version: {sys.version}")
         click.echo(f"Platform: {sys.platform}")
 
 
 @cli.command()
-@click.option(
-    "--config-name", 
-    default="cli_config",
-    help="Configuration name to use"
-)
-@click.option(
-    "--config-value", 
-    default="cli_value",
-    help="Configuration value to use"
-)
-@click.option(
-    "--debug", 
-    is_flag=True, 
-    help="Enable debug mode for processing"
-)
+@click.option("--config-name", default="cli_config", help="Configuration name to use")
+@click.option("--config-value", default="cli_value", help="Configuration value to use")
+@click.option("--debug", is_flag=True, help="Enable debug mode for processing")
 @click.argument("data", nargs=-1, required=True)
 @click.pass_context
 def process(
-    ctx: click.Context, 
-    config_name: str, 
-    config_value: str, 
-    debug: bool, 
-    data: tuple[str, ...]
+    ctx: click.Context,
+    config_name: str,
+    config_value: str,
+    debug: bool,
+    data: tuple[str, ...],
 ) -> None:
     """Process data with the specified configuration.
-    
+
     DATA: One or more data items to process
     """
     if not data:
         click.echo("Error: No data provided to process", err=True)
         sys.exit(1)
-    
+
     # Convert data tuple to list for processing
     data_list: list[Any] = list(data)
-    
+
     # Create configuration
     config = Config(
-        name=config_name,
-        value=config_value,
-        options={"cli": True, "debug": debug}
+        name=config_name, value=config_value, options={"cli": True, "debug": debug}
     )
-    
+
     try:
         result = process_data(data_list, config=config, debug=debug)
-        
+
         if ctx.obj.get("verbose"):
             click.echo(f"Processing result: {result}")
         else:
             click.echo(f"Processed {result['item_count']} items successfully")
-            
+
     except Exception as e:
         click.echo(f"Error processing data: {e}", err=True)
         sys.exit(1)
@@ -126,23 +104,19 @@ def demo(ctx: click.Context) -> None:
     try:
         if ctx.obj.get("verbose"):
             click.echo("Running demo application...")
-        
+
         lib_main()
-        
+
         if ctx.obj.get("verbose"):
             click.echo("Demo completed successfully")
-            
+
     except Exception as e:
         click.echo(f"Error running demo: {e}", err=True)
         sys.exit(1)
 
 
 @cli.command()
-@click.option(
-    "--output-file", 
-    type=click.Path(), 
-    help="Output file for configuration"
-)
+@click.option("--output-file", type=click.Path(), help="Output file for configuration")
 @click.pass_context
 def config(ctx: click.Context, output_file: str | None) -> None:
     """Generate or display configuration."""
@@ -152,10 +126,10 @@ def config(ctx: click.Context, output_file: str | None) -> None:
         options={
             "feature_enabled": True,
             "mode": "production",
-            "logging_level": "INFO"
-        }
+            "logging_level": "INFO",
+        },
     )
-    
+
     config_text = f"""# Sample Configuration
 name: {sample_config.name}
 value: {sample_config.value}
@@ -164,10 +138,10 @@ options:
   mode: {sample_config.options.get('mode', 'default')}
   logging_level: {sample_config.options.get('logging_level', 'INFO')}
 """
-    
+
     if output_file:
         try:
-            with open(output_file, 'w') as f:
+            with open(output_file, "w") as f:
                 f.write(config_text)
             click.echo(f"Configuration written to: {output_file}")
         except Exception as e:

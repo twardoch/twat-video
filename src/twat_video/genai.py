@@ -8,7 +8,13 @@ from pathlib import Path
 from typing import Any
 
 
-def generate_video(prompt: str, *, image: str | Path | None = None, output_dir: str | Path = "generated_videos", **kwargs: Any) -> Any:
+def generate_video(
+    prompt: str,
+    *,
+    image: str | Path | None = None,
+    output_dir: str | Path = "generated_videos",
+    **kwargs: Any,
+) -> Any:
     """Call a future twat_genai video backend without embedding provider clients."""
     try:
         twat_genai = import_module("twat_genai")
