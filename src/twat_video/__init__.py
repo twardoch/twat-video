@@ -1,14 +1,9 @@
 """twat-video: video processing helpers and optional AI video adapters."""
 # this_file: src/twat_video/__init__.py
 
-from importlib.metadata import PackageNotFoundError, version
+from .__version__ import __version__  # noqa: F401
 
 from twat_video.__main__ import main as cli_main
-
-try:
-    __version__ = version("twat-video")
-except PackageNotFoundError:
-    __version__ = "0.0.0-dev"
 
 from twat_video.ffmpeg import CommandResult, ffprobe_json, run_command, run_ffmpeg
 from twat_video.genai import generate_video
