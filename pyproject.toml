@@ -45,6 +45,7 @@ classifiers = [
 # External packages required for the project to function
 dependencies = [
     "twat>=1.8.1",
+    "fire>=0.5.0",
 ]
 
 
@@ -59,7 +60,20 @@ Issues = "https://github.com/twardoch/twat-video/issues"
 Source = "https://github.com/twardoch/twat-video"
 
 [project.scripts]
-twat-video = "twat_video:main"
+twat-video                    = "twat_video.__main__:main"
+twat-video-version            = "twat_video.__main__:cmd_version"
+twat-video-crop-scale         = "twat_video.__main__:cmd_crop_scale"
+twat-video-fps                = "twat_video.__main__:cmd_fps"
+twat-video-split              = "twat_video.__main__:cmd_split"
+twat-video-reverse            = "twat_video.__main__:cmd_reverse"
+twat-video-import-audio       = "twat_video.__main__:cmd_import_audio"
+twat-video-extract-subtitles  = "twat_video.__main__:cmd_extract_subtitles"
+twat-video-ken-burns          = "twat_video.__main__:cmd_ken_burns"
+twat-video-grain              = "twat_video.__main__:cmd_grain"
+twat-video-reverb             = "twat_video.__main__:cmd_reverb"
+twat-video-concat             = "twat_video.__main__:cmd_concat"
+twat-video-probe              = "twat_video.__main__:cmd_probe"
+twat-video-genai              = "twat_video.__main__:cmd_genai"
 
 [project.entry-points."twat.plugins"]
 video = "twat_video"

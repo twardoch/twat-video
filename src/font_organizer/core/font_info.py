@@ -17,7 +17,7 @@ from fontTools.ttLib import TTFont
 from fontTools.ttLib.tables._n_a_m_e import table__n_a_m_e
 from loguru import logger
 
-from .exceptions import FontNotFoundError, FontParseError
+from font_organizer.core.exceptions import FontNotFoundError, FontParseError
 
 
 class FontStyle(Enum):
@@ -338,7 +338,8 @@ class FontInfo:
         """
         if isinstance(char, str):
             if len(char) != 1:
-                raise ValueError("Only single characters are supported")
+                msg = "Only single characters are supported"
+                raise ValueError(msg)
             char = ord(char)
 
         return char in self.characters

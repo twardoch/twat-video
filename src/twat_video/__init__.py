@@ -1,7 +1,7 @@
 """twat-video: video processing helpers and optional AI video adapters."""
 # this_file: src/twat_video/__init__.py
 
-from .__version__ import __version__
+from twat_video.__version__ import __version__
 
 from twat_video.__main__ import main as cli_main
 

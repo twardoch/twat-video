@@ -16,10 +16,10 @@ from dataclasses import dataclass, field
 from typing import Any
 
 # Import the version from the dedicated file, which is managed by hatch-vcs
-from .__version__ import __version__
+from font_organizer.__version__ import __version__
 
 # Define what is publicly available when importing *
-__all__ = ["Config", "process_data", "main", "__version__"]
+__all__ = ["Config", "__version__", "main", "process_data"]
 
 # Configure basic logging
 # Applications using this library should configure their own logging handlers.

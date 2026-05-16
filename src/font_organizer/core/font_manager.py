@@ -13,8 +13,8 @@ from typing import Any
 
 from loguru import logger
 
-from .config import Config, load_config
-from .font_info import FontInfo
+from font_organizer.core.config import Config, load_config
+from font_organizer.core.font_info import FontInfo
 
 
 class FontManager:
