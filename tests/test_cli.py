@@ -3,11 +3,18 @@
 
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
+from pathlib import Path
 
 import twat_video
 from twat_video.__main__ import COMMANDS
+
+# Ensure subprocesses find the development version of twat_video from src/,
+# not an older system-installed copy.
+_SRC = str(Path(__file__).resolve().parents[1] / "src")
+_ENV = {**os.environ, "PYTHONPATH": _SRC + os.pathsep + os.environ.get("PYTHONPATH", "")}
 
 
 def _run(*args: str) -> subprocess.CompletedProcess[str]:
@@ -16,6 +23,7 @@ def _run(*args: str) -> subprocess.CompletedProcess[str]:
         capture_output=True,
         text=True,
         check=False,
+        env=_ENV,
     )
 
 

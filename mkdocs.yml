@@ -1,10 +1,10 @@
 # this_file: mkdocs.yml
 
-site_name: Font Organizer
-site_description: Modern font organization tool for managing and curating font collections
-site_url: https://github.com/twardoch/font_organizer
-repo_url: https://github.com/twardoch/font_organizer
-repo_name: twardoch/font_organizer
+site_name: twat-video
+site_description: Video processing helpers and AI video adapters for the twat plugin ecosystem
+site_url: https://twardoch.github.io/twat-video
+repo_url: https://github.com/twardoch/twat-video
+repo_name: twardoch/twat-video
 docs_dir: src_docs
 site_dir: docs
 
@@ -29,11 +29,8 @@ theme:
     - navigation.tabs
     - navigation.sections
     - navigation.expand
-    - navigation.prune
-    - navigation.indexes
     - navigation.top
     - toc.follow
-    - toc.integrate
     - search.suggest
     - search.highlight
     - content.code.copy
@@ -75,29 +72,11 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Getting Started:
-      - Installation: getting-started/installation.md
-      - Quick Start: getting-started/quickstart.md
-      - Configuration: getting-started/configuration.md
-  - User Guide:
-      - Basic Usage: guide/basic-usage.md
-      - Font Organization: guide/font-organization.md
-      - Detection & Analysis: guide/detection-analysis.md
-      - Subsetting: guide/subsetting.md
-      - Command Reference: guide/commands.md
   - API Reference:
-      - Overview: api/overview.md
-      - Core Modules: api/core.md
-      - Utilities: api/utilities.md
-  - Development:
-      - Contributing: development/contributing.md
-      - Testing: development/testing.md
-      - Architecture: development/architecture.md
+      - Overview: api.md
   - Changelog: changelog.md
 
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/twardoch/font_organizer
-  version:
-    provider: mike
+      link: https://github.com/twardoch/twat-video
