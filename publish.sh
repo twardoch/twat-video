@@ -1,40 +1,38 @@
 #!/usr/bin/env bash
-# publish.sh — Snapshot, tag next semver, build, publish.
-# Uses uv build (PEP 517 via hatchling), bypassing hatch envs entirely.
-# Bypasses pre-commit hooks (--no-verify) so quality gates don't block release.
+# this_file: publish.sh
+#
+# Release twat-video: asks GitHub Actions (.github/workflows/release.yml) to
+# create the tag, build, cut a GitHub release, then publish to PyPI through
+# Trusted Publishing. No PyPI token is needed locally.
+#
+# Usage: ./publish.sh            # next patch after the latest vX.Y.Z tag
+#        ./publish.sh v1.4.0     # explicit tag
+# The tag is made on the HEAD of the remote default branch, so push first.
+
 set -euo pipefail
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
-rm -rf dist/ build/ *.egg-info
+REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner)"
+BRANCH="$(gh repo view --json defaultBranchRef -q .defaultBranchRef.name)"
+git fetch -q --tags origin
 
-# 1. Snapshot any pending working-tree changes so HEAD is the release point.
-if ! git diff --quiet || ! git diff --cached --quiet; then
-    git add -A
-    git commit --no-verify -m "chore: pre-publish snapshot" || true
+TAG="${1:-}"
+if [[ -z "$TAG" ]]; then
+  last="$(git tag -l 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n1)"
+  IFS=. read -r major minor patch <<<"${last#v}"
+  TAG="v${major:-0}.${minor:-0}.$((${patch:-0} + 1))"
+fi
+if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  echo "error: '$TAG' is not a vMAJOR.MINOR.PATCH tag" >&2
+  exit 1
 fi
 
-# 2. Compute next version: bump patch of latest v* tag, or v0.1.0 if none.
-latest_tag=$(git tag --list 'v*' --sort=-v:refname | head -n 1 || true)
-if [[ -z "$latest_tag" ]]; then
-    next="v0.1.0"
-else
-    IFS='.' read -r major minor patch <<< "${latest_tag#v}"
-    major=${major:-0}; minor=${minor:-0}; patch=${patch:-0}
-    next="v${major}.${minor}.$((patch + 1))"
+if [[ "$(git rev-parse HEAD)" != "$(git rev-parse "origin/$BRANCH")" ]]; then
+  echo "warning: local HEAD differs from origin/$BRANCH; the release is cut from origin/$BRANCH" >&2
 fi
 
-# 3. If HEAD already has a v* tag (clean release point), reuse it; else tag now.
-existing=$(git tag --points-at HEAD --list 'v*' | head -n 1 || true)
-if [[ -z "$existing" ]]; then
-    git tag -a "$next" -m "Release $next"
-    echo "Tagged $next"
-else
-    echo "HEAD already tagged: $existing"
-fi
-
-# 4. Build via uv (uses hatchling directly, no hatch env-plugin sync).
-uv build
-
-# 5. Publish.
-uv publish
+echo "Releasing $REPO $TAG from $BRANCH"
+gh workflow run release.yml -R "$REPO" --ref "$BRANCH" -f tag="$TAG"
+sleep 5
+gh run list -R "$REPO" --workflow release.yml -L 1
+echo "Follow it with: gh run watch -R $REPO"
